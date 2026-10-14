@@ -21,7 +21,7 @@ export const serviceTypeLabels: Record<ServiceType, string> = { free_route: '免
 export const processLabels: Record<ProcessStatus, string> = { received: '已接收', assigned: '已分配', in_progress: '处理中', quoted: '待确认报价', confirmed: '已确认', completed: '已完成', cancelled: '已取消' }
 export const usdCents = (value: number | null | undefined) => value == null ? '等待独立规划报价' : `USD ${(value / 100).toFixed(2)}`
 export const serviceRequestsApi = {
-  list(params: { page: number; size: number; serviceType?: string; processStatus?: string; citySlug?: string; q?: string }) { return api.get<ApiResponse<{ data: ServiceRequest[]; total: number; page: number; size: number }>>('/service-requests', { params }) },
+  list(params: { page: number; size: number; serviceType?: string; processStatus?: string; citySlug?: string; q?: string }) { return api.get<ApiResponse<{ data: ServiceRequest[]; total: number; page: number; size: number }>>('/service-requests', { params: { page: params.page, size: params.size, serviceType: params.serviceType || undefined, processStatus: params.processStatus || undefined, citySlug: params.citySlug || undefined, q: params.q || undefined } }) },
   detail(id: string) { return api.get<ApiResponse<ServiceRequest>>(`/service-requests/${id}`) },
   staff() { return api.get<ApiResponse<{ data: Array<{ id: string; name: string; role: string }> }>>('/service-requests/staff') },
   assign(id: string, payload: { plannerId: string; interpreterId?: string; reason?: string }) { return api.patch<ApiResponse<ServiceRequest>>(`/service-requests/${id}/assignment`, payload) },
